@@ -1,4 +1,4 @@
-import {Request, Response, Controller, Get, Post} from '@decorators/express';
+const {Request, Response, Controller, Get, Post} = require("@decorators/express");
 import API = require("./API");
 
 @Controller("/users")

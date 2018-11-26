@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "module": "commonjs",
@@ -20,7 +19,8 @@
     "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
     "typeRoots": ["node_modules/@types"],
-    "pretty": true
+    "pretty": true,
+    "resolveJsonModule": true
   },
   "exclude": [ "node_modules" ],
   "types": [ "typePatches" ]
