@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "module": "commonjs",
     "target": "es2017",
     "lib": [ "es2017", "dom" ],
     "moduleResolution": "node",
-    "rootDir": "./",
+    "noEmitOnError": true,
+    "rootDir": ".",
     "sourceMap": true,
     "allowJs": false,
     "noImplicitAny": true,
@@ -15,7 +19,8 @@
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true
+    "typeRoots": ["node_modules/@types"],
+    "pretty": true
   },
   "exclude": [ "node_modules" ],
   "types": [ "typePatches" ]

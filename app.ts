@@ -26,12 +26,12 @@ decorators.attachControllers(app,
 );
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   next(createError(404));
 });
 
 // error handler
-app.use((err: any, req: any, res: any, next: any) => {
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
   res.status(err.status || 500);
   res.send(err);
 });

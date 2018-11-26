@@ -1,18 +1,18 @@
-import { Response, Params, Controller, Get, Post } from '@decorators/express';
+import {Request, Response, Controller, Get, Post} from '@decorators/express';
 import API = require("./API");
 
-@Controller("/")
+@Controller("/users")
 class UserController extends API {
-    @Get("/users/:id")
-    async getUser (@Response() res: any, @Params('id') id: string) {
+    @Get("/:id")
+    async getUser (@Request() req: any, @Response() res: any) {
         res.send({
             route: "/users/:id",
-            id
+            id: req.params.id
         });
     }
 
-    @Post("/users")
-    async createUser (@Response() res: any) {
+    @Post("/")
+    async createUser (@Request() req: any, @Response() res: any) {
         res.send({
             route: "/users"
         });
