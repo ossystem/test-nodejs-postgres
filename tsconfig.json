@@ -14,7 +14,8 @@
     "noImplicitReturns": true,
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true
   },
   "exclude": [ "node_modules" ],
   "types": [ "typePatches" ]

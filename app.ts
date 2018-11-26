@@ -1,20 +1,29 @@
-import createError = require('http-errors');
-import express = require('express');
-import cookieParser = require('cookie-parser');
-import logger = require('morgan');
-
-// import indexRouter = require('./routes/index');
-// import usersRouter = require('./routes/users');
+import createError = require("http-errors");
+import express = require("express");
+import cookieParser = require("cookie-parser");
+import logger = require("morgan");
+import fs = require("fs");
+import path = require("path");
+import decorators = require("@decorators/express");
 
 const app = express();
 
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+// autoload controllers
+decorators.attachControllers(app,
+    fs.readdirSync(path.resolve(__dirname, "controllers"))
+      .reduce((acc: any[], filename: string) => {
+          if (filename.endsWith("controller.js")) {
+              acc.push(require(`./controllers/${filename}`));
+          }
+
+          return acc;
+      }, [])
+);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -23,13 +32,8 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err: any, req: any, res: any, next: any) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send(err);
 });
 
 export = app;
