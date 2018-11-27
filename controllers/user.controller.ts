@@ -19,6 +19,7 @@ class UserController extends API {
 
             if (!isNaN(id)) {
                 result = await findById("users", id);
+                result = result || {};
             }
         } catch (ex) {
             console.log(__filename, "exception:", ex);
@@ -33,24 +34,38 @@ class UserController extends API {
 
         try {
             const body: any = req.body;
+            const writableFields: string[] = [
+                "email",
+                "first_name",
+                "last_name"
+            ];
 
             if (body.id) {
+                const updatableFields: any = {};
+
+                Object.keys(body).forEach((field) => {
+                    if (writableFields.includes(field) && (field !== "id")) {
+                        updatableFields[field] = body[field];
+                    }
+                });
+
                 await db("users")
-                    .update({
-                        email: body.email,
-                        first_name: body.first_name,
-                        last_name: body.last_name
-                    })
+                    .update(updatableFields)
                     .where("id", body.id);
 
                 result = await findById("users", body.id);
+                result = result || {};
             } else {
+                const insertableFields: any = {};
+
+                Object.keys(body).forEach((field) => {
+                    if (writableFields.includes(field) && (field !== "id")) {
+                        insertableFields[field] = body[field];
+                    }
+                });
+
                 const id: any = await db("users")
-                    .insert({
-                        email: body.email,
-                        first_name: body.first_name,
-                        last_name: body.last_name
-                    })
+                    .insert(insertableFields)
                     .returning("id")
                     .into("users");
 
