@@ -1,44 +1,55 @@
 const config = require("../config.json");
 
-class Db {
-    private static connection: any;
+let connection: any;
 
-    public static getConnectionParams () {
-        const dbConfig: any = config.db;
+const getConnectionParams = () => {
+    const dbConfig: any = config.db;
 
-        return {
-            client: "pg",
-            connection: {
-                host: dbConfig.host,
-                user: dbConfig.username,
-                password: dbConfig.password,
-                database: dbConfig.dbName
-            }
+    return {
+        client: "pg",
+        connection: {
+            host: dbConfig.host,
+            user: dbConfig.username,
+            password: dbConfig.password,
+            database: dbConfig.dbName
+        }
+    }
+};
+
+const getConnection = () => {
+    if (!connection) {
+        try {
+            connection = require("knex")(getConnectionParams());
+
+            console.log("Connection to DB has established successfully.");
+        } catch (ex) {
+            console.log("Connection to DB is unavailable. Exception:", ex);
         }
     }
 
-    public static getConnection () {
-        if (!Db.connection) {
-            try {
-                Db.connection = require("knex")(Db.getConnectionParams());
-                
-                console.log("Connection to DB has established successfully.");
-            } catch (ex) {
-                console.log("Connection to DB is unavailable. Exception:", ex);
-            }
-        }
+    return connection;
+};
 
-        return Db.connection;
+const closeConnection = () => {
+    if (connection) {
+        connection.destroy();
+        connection = null;
+
+        console.log("Connection to DB has been closed successfully.");
     }
+};
 
-    public static closeConnection () {
-        if (Db.connection) {
-            Db.connection.destroy();
-            Db.connection = null;
+const findById = async (table: string, id: string|number) => {
+    return await getConnection()
+        .select()
+        .from(table)
+        .where("id", id)
+        .first();
+};
 
-            console.log("Connection to DB has been closed successfully.");
-        }
-    }
-}
-
-export = Db;
+export = {
+    getConnectionParams,
+    getConnection,
+    closeConnection,
+    findById
+};

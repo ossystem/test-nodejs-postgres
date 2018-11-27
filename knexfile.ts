@@ -1,7 +1,7 @@
-import Db = require("./utils/db");
-import path = require("path");
+const {getConnectionParams} = require("./utils/db");
+const path = require("path");
 
-const params: object = Object.assign({}, Db.getConnectionParams(), {
+const params: object = Object.assign({}, getConnectionParams(), {
     migrations: {
         directory: path.resolve(__dirname, "migrations")
     },
